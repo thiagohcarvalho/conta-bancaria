@@ -17,12 +17,13 @@ public class Main {
             IO.println("Bem vindo ao aplicativo do banco!");
             IO.println("1 - Cadastrar cliente");
             IO.println("2 - Criar conta");
-            IO.println("3 - Listar contas");
-            IO.println("4 - Depositar");
-            IO.println("5 - Sacar");
-            IO.println("6 - Transferir");
-            IO.println("7 - Consultar saldo");
-            IO.println("8 - Sair");
+            IO.println("3 - Listar clientes");
+            IO.println("4 - Listar contas");
+            IO.println("5 - Depositar");
+            IO.println("6 - Sacar");
+            IO.println("7 - Transferir");
+            IO.println("8 - Consultar saldo");
+            IO.println("9 - Sair");
             IO.println("Escolha uma opção para continuar:");
             String opcao = scanner.nextLine();
 
@@ -52,6 +53,14 @@ public class Main {
                     }
                 }
                 break;
+                case "3": {
+                    listarClientes();
+                }
+                break;
+                case "4": {
+                    listarContas();
+                }
+                break;
             }
         }
 
@@ -68,6 +77,29 @@ public class Main {
         contasList.add(conta);
     }
 
+    private static void listarClientes() {
+        for (Cliente cliente : clientesList) {
+            boolean hasAccount = doesCpfHaveAccount(cliente);
+
+            IO.println("========================");
+            IO.println("Nome do cliente: " + cliente.getNome());
+            IO.println("CPF do cliente: " + cliente.getCpf());
+            IO.println("O cliente possui conta? " + (hasAccount ? "Sim" : "Não"));
+        }
+        IO.println("========================");
+    }
+
+    private static void listarContas() {
+        for (Conta conta : contasList) {
+            IO.println("========================");
+            IO.println("Conta número: " + conta.getNumero());
+            IO.println("Saldo: " + conta.getSaldo());
+            IO.println("Nome do cliente: " + conta.getCliente().getNome());
+            IO.println("CPF do cliente: " + conta.getCliente().getCpf());
+        }
+        IO.println("========================");
+    }
+
     private static Cliente findCliente(String cpfCliente) {
         for (Cliente cliente : clientesList) {
             if (Objects.equals(cliente.getCpf(), cpfCliente)) {
@@ -78,11 +110,6 @@ public class Main {
     }
 
     private static boolean doesCpfHaveAccount(Cliente cliente) {
-        for (Conta conta : contasList) {
-            if (Objects.equals(conta.getCliente(), cliente)) {
-                return true;
-            }
-        }
-        return false;
+        return contasList.stream().anyMatch(conta -> conta.getCliente().equals(cliente));
     }
 }

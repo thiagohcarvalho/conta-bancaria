@@ -3,11 +3,11 @@ package org.example;
 import java.math.BigDecimal;
 
 public class Conta {
-    private int numero;
+    private final int numero;
 
     private BigDecimal saldo;
 
-    private Cliente cliente;
+    private final Cliente cliente;
 
     public Conta(int numero, Cliente cliente) {
         this.numero = numero;
