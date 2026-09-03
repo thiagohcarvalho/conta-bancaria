@@ -1,7 +1,9 @@
 package org.example;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {
@@ -61,6 +63,24 @@ public class Main {
                     listarContas();
                 }
                 break;
+                case "5": {
+                    IO.println("Digite a conta que você deseja realizar a ação:");
+                    int numeroConta = scanner.nextInt();
+                    Optional<Conta> conta = findConta(numeroConta);
+                    if (conta.isPresent()) {
+                        IO.println("Digite a quantidade que você deseja depositar:");
+                        BigDecimal valorADepositar = scanner.nextBigDecimal();
+                        if (valorADepositar.compareTo(BigDecimal.ZERO) > 0) {
+                            conta.get().depositar(valorADepositar);
+                            IO.println("Valor depositado. Para consultar o saldo total, escolha a opção no menu!");
+                        } else {
+                            IO.println("Valor abaixo de zero, tente novamente.");
+                        }
+                    } else {
+                        IO.println("Conta não encontrada! Tente novamente.");
+                    }
+                }
+                break;
             }
         }
 
@@ -111,5 +131,9 @@ public class Main {
 
     private static boolean doesCpfHaveAccount(Cliente cliente) {
         return contasList.stream().anyMatch(conta -> conta.getCliente().equals(cliente));
+    }
+
+    private static Optional<Conta> findConta(int numeroConta) {
+        return contasList.stream().filter(conta -> conta.getNumero() == numeroConta).findAny();
     }
 }

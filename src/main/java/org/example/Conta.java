@@ -26,4 +26,11 @@ public class Conta {
     public Cliente getCliente() {
         return cliente;
     }
+
+    public void depositar(BigDecimal valorADepositar) {
+        if (valorADepositar.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor deve ser positivo.");
+        }
+        saldo = saldo.add(valorADepositar);
+    }
 }
