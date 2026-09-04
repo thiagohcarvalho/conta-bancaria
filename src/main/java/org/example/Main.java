@@ -71,13 +71,41 @@ public class Main {
                         IO.println("Digite a quantidade que você deseja depositar:");
                         BigDecimal valorADepositar = scanner.nextBigDecimal();
                         if (valorADepositar.compareTo(BigDecimal.ZERO) > 0) {
-                            conta.get().depositar(valorADepositar);
+                            try {
+                                conta.get().depositar(valorADepositar);
+                            } catch (IllegalArgumentException e) {
+                                IO.println(e.getMessage());
+                                break;
+                            }
                             IO.println("Valor depositado. Para consultar o saldo total, escolha a opção no menu!");
                         } else {
                             IO.println("Valor abaixo de zero, tente novamente.");
                         }
                     } else {
-                        IO.println("Conta não encontrada! Tente novamente.");
+                        IO.println("Número de conta inválido! Tente novamente.");
+                    }
+                }
+                break;
+                case "6": {
+                    IO.println("Digite a conta que você deseja sacar:");
+                    int numeroConta = scanner.nextInt();
+                    Optional<Conta> conta = findConta(numeroConta);
+                    if (conta.isPresent()) {
+                        IO.println("Digite quanto você sacar:");
+                        BigDecimal valorASacar = scanner.nextBigDecimal();
+                        if (valorASacar.compareTo(BigDecimal.ZERO) > 0) {
+                            try {
+                                conta.get().sacar(valorASacar);
+                            } catch (IllegalArgumentException e) {
+                                IO.println(e.getMessage());
+                                break;
+                            }
+                            IO.println("Valor sacado. Para consultar o saldo total, escolha a opção no menu!");
+                        } else {
+                            IO.println("Valor a sacar deve ser maior do que zero!");
+                        }
+                    } else {
+                        IO.println("Número de conta inválido! Tente novamente.");
                     }
                 }
                 break;

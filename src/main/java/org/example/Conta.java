@@ -33,4 +33,14 @@ public class Conta {
         }
         saldo = saldo.add(valorADepositar);
     }
+
+    public void sacar(BigDecimal valorASacar) {
+        if (valorASacar.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new IllegalArgumentException("O valor deve ser positivo.");
+        }
+        if (valorASacar.compareTo(saldo) > 0) {
+            throw new IllegalArgumentException("Saldo não suficiente para saque! Verifique seu saldo.");
+        }
+        saldo = saldo.subtract(valorASacar);
+    }
 }
